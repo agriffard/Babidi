@@ -1,0 +1,74 @@
+@page "/items/create"
+@page "/items/edit/{Id:int}"
+@inject ItemService ItemService
+@inject NavigationManager NavigationManager
+
+<PageTitle>@(IsEdit ? "Edit Item" : "Create Item")</PageTitle>
+
+<h1>@(IsEdit ? "Edit Item" : "Create Item")</h1>
+
+<EditForm EditContext="editContext" OnValidSubmit="SaveAsync">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <Card>
+        <CardContent class="form-grid">
+            <div>
+                <Label For="name">Name</Label>
+                <Input Id="name" @bind-Value="model.Name" />
+            </div>
+            <div>
+                <Label For="category">Category</Label>
+                <Input Id="category" @bind-Value="model.Category" />
+            </div>
+            <div>
+                <Label For="status">Status</Label>
+                <Input Id="status" @bind-Value="model.Status" />
+            </div>
+            <div>
+                <Label For="value">Value</Label>
+                <Input Id="value" Type="InputType.Number" @bind-Value="valueInput" />
+            </div>
+            <div class="switch-row">
+                <Switch @bind-Checked="model.IsFeatured" />
+                <Label>Featured item</Label>
+            </div>
+            <div>
+                <Label For="notes">Notes</Label>
+                <Textarea Id="notes" @bind-Value="model.Notes" />
+            </div>
+        </CardContent>
+        <CardFooter class="topbar-actions">
+            <button type="button" class="action-btn" @onclick="Cancel">Cancel</button>
+            <button type="submit" class="action-btn">Save</button>
+        </CardFooter>
+    </Card>
+</EditForm>
+
+@code {
+    [Parameter] public int? Id { get; set; }
+
+    private DashboardItem model = new();
+    private EditContext editContext = default!;
+    private string valueInput = "0";
+
+    private bool IsEdit => Id.HasValue;
+
+    protected override void OnParametersSet()
+    {
+        model = Id.HasValue ? ItemService.GetById(Id.Value) ?? new DashboardItem() : new DashboardItem();
+        valueInput = model.Value.ToString(CultureInfo.InvariantCulture);
+        editContext = new EditContext(model);
+    }
+
+    private Task SaveAsync()
+    {
+        _ = decimal.TryParse(valueInput, out var value);
+        model.Value = value;
+        ItemService.Save(model);
+        NavigationManager.NavigateTo("/items");
+        return Task.CompletedTask;
+    }
+
+    private void Cancel() => NavigationManager.NavigateTo("/items");
+}

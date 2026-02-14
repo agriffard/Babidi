@@ -1,0 +1,30 @@
+@page "/dashboard"
+
+<PageTitle>Dashboard</PageTitle>
+
+<h1>Dashboard</h1>
+
+<div class="stats-grid">
+    <Card><CardHeader><CardTitle>Total Users</CardTitle></CardHeader><CardContent>1,248</CardContent></Card>
+    <Card><CardHeader><CardTitle>Revenue</CardTitle></CardHeader><CardContent>$84,320</CardContent></Card>
+    <Card><CardHeader><CardTitle>Active Sessions</CardTitle></CardHeader><CardContent>312</CardContent></Card>
+    <Card><CardHeader><CardTitle>Growth</CardTitle></CardHeader><CardContent><Badge Variant="BadgeVariant.Default">+12.4%</Badge></CardContent></Card>
+</div>
+
+<Card>
+    <CardHeader>
+        <CardTitle>Activity summary</CardTitle>
+        <CardDescription>Example dashboard panels built with BlazorBlueprint</CardDescription>
+    </CardHeader>
+    <CardContent>
+        <Sheet>
+            <SheetTrigger AsChild>
+                <Button Variant="ButtonVariant.Outline">Open flyout panel</Button>
+            </SheetTrigger>
+            <SheetContent>
+                <CardTitle>Quick view</CardTitle>
+                <p>Review item details and notifications from this reusable flyout panel.</p>
+            </SheetContent>
+        </Sheet>
+    </CardContent>
+</Card>

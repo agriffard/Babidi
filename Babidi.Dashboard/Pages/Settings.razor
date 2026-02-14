@@ -1,0 +1,35 @@
+@page "/settings"
+
+<PageTitle>Settings</PageTitle>
+
+<h1>Settings</h1>
+
+<Tabs DefaultValue="general">
+    <TabsList>
+        <TabsTrigger Value="general">General</TabsTrigger>
+        <TabsTrigger Value="notifications">Notifications</TabsTrigger>
+    </TabsList>
+    <TabsContent Value="general">
+        <Card>
+            <CardContent class="space-y-3">
+                <p>Application settings placeholder.</p>
+                <Switch @bind-Checked="compactMode" />
+                <Label>Compact mode</Label>
+            </CardContent>
+        </Card>
+    </TabsContent>
+    <TabsContent Value="notifications">
+        <Card>
+            <CardContent class="space-y-3">
+                <p>Notification preferences placeholder.</p>
+                <Switch @bind-Checked="emailNotifications" />
+                <Label>Email alerts</Label>
+            </CardContent>
+        </Card>
+    </TabsContent>
+</Tabs>
+
+@code {
+    private bool compactMode;
+    private bool emailNotifications = true;
+}

@@ -1,0 +1,57 @@
+@page "/items"
+@inject NavigationManager NavigationManager
+@inject ItemService ItemService
+
+<PageTitle>Items</PageTitle>
+
+<h1>Items</h1>
+
+<div class="toolbar">
+    <Input Placeholder="Search by name or category" @bind-Value="query" />
+    <button class="action-btn" @onclick="ApplySearch">Search</button>
+    <button class="action-btn" @onclick="@(() => NavigationManager.NavigateTo("/items/create"))">Create</button>
+</div>
+
+<Card>
+    <CardContent>
+        <table class="simple-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in items)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Name</td>
+                        <td>@item.Status</td>
+                        <td>@item.CreatedDate</td>
+                        <td>@item.Value</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </CardContent>
+</Card>
+
+<div class="row-actions">
+    @foreach (var item in items)
+    {
+        <button class="action-btn" @onclick="@(() => NavigationManager.NavigateTo($"/items/edit/{item.Id}"))">Edit @item.Id</button>
+    }
+</div>
+
+@code {
+    private string query = string.Empty;
+    private IReadOnlyList<DashboardItem> items = [];
+
+    protected override void OnInitialized() => ApplySearch();
+
+    private void ApplySearch() => items = ItemService.GetAll(query);
+}
