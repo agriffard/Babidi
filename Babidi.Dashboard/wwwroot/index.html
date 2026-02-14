@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Babidi Dashboard</title>
     <base href="/" />
+    <!-- Theme CSS variables - must load first -->
+    <link href="styles/themes/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="_content/BlazorBlueprint.Components/blazorblueprint.css" />
     <link rel="stylesheet" href="css/app.css" />
     <link rel="icon" type="image/png" href="favicon.png" />
     <link href="Babidi.Dashboard.styles.css" rel="stylesheet" />
 </head>
-<body>
+<body class="font-sans antialiased">
     <div id="app">
         <svg class="loading-progress">
             <circle r="40%" cx="50%" cy="50%" />
@@ -25,7 +27,17 @@
         <a class="dismiss">🗙</a>
     </div>
 
+    <!-- Preload Floating UI for positioning (Select, Popover, etc.) -->
+    <script type="module">
+        import * as FloatingUI from 'https://cdn.jsdelivr.net/npm/@@floating-ui/dom@@1.5.3/+esm';
+        window.FloatingUIDOM = FloatingUI;
+    </script>
+
     <script src="theme.js"></script>
     <script src="_framework/blazor.webassembly.js"></script>
+    <script>
+        window.toggleDarkMode = () => document.documentElement.classList.toggle('dark');
+        window.isDarkModeEnabled = () => document.documentElement.classList.contains('dark');
+    </script>
 </body>
 </html>
