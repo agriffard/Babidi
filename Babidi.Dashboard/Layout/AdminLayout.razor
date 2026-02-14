@@ -4,32 +4,7 @@
 <ToastProvider Position="ToastPosition.BottomRight" />
 <PortalHost />
 
-<div class="relative min-h-screen flex flex-col">
-	<header class="sticky top-0 z-50 w-full border-b bg-background">
-        <div class="container flex h-14 items-center">
-            @* <div class="mr-4 flex">
-                <a href="/" class="mr-6 flex items-center space-x-2">
-                    <LucideIcon Name="box" Size="24" class="text-primary" />
-                    <span class="font-bold">App</span>
-                </a>
-            </div>
-            <nav class="flex items-center space-x-6 text-sm font-medium">
-            </nav> *@
-            <div class="flex flex-1 items-center justify-end space-x-2">
-                <Button Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" @onclick="ToggleDarkMode">
-                    @if (isDarkMode)
-                    {
-                        <LucideIcon Name="sun" Size="20" />
-                    }
-                    else
-                    {
-                        <LucideIcon Name="moon" Size="20" />
-                    }
-                </Button>
-            </div>
-        </div>
-    </header>
-    
+<div class="relative min-h-screen flex flex-col">    
 	<SidebarProvider>
 		<Sidebar>
 			<SidebarHeader>
@@ -111,13 +86,39 @@
 				</DropdownMenu>
 			</SidebarFooter>
 		</Sidebar>
-		<main class="flex-1">
-			@Body
-		</main>
 		<SidebarInset>
+			<header class="sidebar-inset-header sticky top-0 z-50 w-full border-b bg-background">
+				<div class="container flex h-14 items-center">
+					<SidebarTrigger />
+					@*
+            <nav class="flex items-center space-x-6 text-sm font-medium">
+            </nav> *@
+					<div class="flex flex-1 items-center justify-end space-x-2">
+						<Button Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" @onclick="ToggleDarkMode">
+							@if (isDarkMode)
+							{
+								<LucideIcon Name="sun" Size="20" />
+							}
+							else
+							{
+								<LucideIcon Name="moon" Size="20" />
+							}
+						</Button>
+					</div>
+				</div>
+				<Separator Orientation="SeparatorOrientation.Vertical" class="separator-vertical" />
+				@* <AuthorizeView Context="authContext">
+                <Authorized>
+                    <span class="user-email">@UserEmail</span>
+                    <span class="user-role-badge">@UserRole</span>
+                </Authorized>
+            </AuthorizeView> *@
+			</header>
+			<main class="sidebar-inset-content flex-1">
+				@Body
+			</main>
 		</SidebarInset>
 	</SidebarProvider>
-
 	<footer class="border-t py-6 md:py-0">
 		<div class="container flex flex-col items-center justify-between gap-4 md:h-14 md:flex-row">
 			<p class="text-sm text-muted-foreground">
