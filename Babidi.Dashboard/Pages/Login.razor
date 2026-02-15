@@ -1,0 +1,55 @@
+@page "/login"
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Login</PageTitle>
+
+<div class="login-shell">
+    <Card Class="login-card">
+        <CardHeader>
+            <CardTitle>Babidi Dashboard</CardTitle>
+            <CardDescription>Sign in to continue</CardDescription>
+        </CardHeader>
+        <CardContent class="space-y-4">
+            <EditForm Model="this" OnSubmit="LoginAsync">
+                <div>
+                    <Label For="email">Email</Label>
+                    <InputText id="email" class="native-input" @bind-Value="email" />
+                </div>
+                <div>
+                    <Label For="password">Password</Label>
+                    <InputText id="password" type="password" class="native-input" @bind-Value="password" />
+                </div>
+                <div class="remember-row">
+                    <InputCheckbox id="remember" @bind-Value="rememberMe" />
+                    <Label For="remember">Remember me</Label>
+                </div>
+                @if (!string.IsNullOrEmpty(error))
+                {
+                    <p class="error-text">@error</p>
+                }
+                <CardFooter>
+                    <button type="submit" class="action-btn">Login</button>
+                </CardFooter>
+            </EditForm>
+        </CardContent>
+    </Card>
+</div>
+
+@code {
+    private string email = string.Empty;
+    private string password = string.Empty;
+    private bool rememberMe = true;
+    private string? error;
+
+    private async Task LoginAsync(EditContext _)
+    {
+        if (!await AuthService.LoginAsync(email, password))
+        {
+            error = "Please provide both email and password.";
+            return;
+        }
+
+        NavigationManager.NavigateTo("/dashboard");
+    }
+}

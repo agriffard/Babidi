@@ -1,0 +1,67 @@
+@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
+@inject ThemeService ThemeService
+@inject AuthService AuthService
+
+<PageTitle>Babidi Dashboard</PageTitle>
+
+<div class="dashboard-shell">
+    <aside class="sidebar">
+        <div class="brand">Babidi</div>
+        <nav>
+            <NavLink href="/dashboard">Dashboard</NavLink>
+            <NavLink href="/items">Items</NavLink>
+            <NavLink href="/items/create">Create Item</NavLink>
+            <NavLink href="/profile">Profile</NavLink>
+            <NavLink href="/settings">Settings</NavLink>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="topbar">
+            <div>
+                <small class="muted">Babidi / @Breadcrumb</small>
+            </div>
+            <div class="topbar-actions">
+                <button class="action-btn" @onclick="ThemeService.ToggleAsync">
+                    @(ThemeService.IsDarkMode ? "Light" : "Dark") mode
+                </button>
+                <button class="action-btn" @onclick="LogoutAsync">Logout</button>
+            </div>
+        </header>
+        <section class="content">@Body</section>
+    </main>
+</div>
+
+@code {
+    private bool IsLoginPage => NavigationManager.ToBaseRelativePath(NavigationManager.Uri).StartsWith("login", StringComparison.OrdinalIgnoreCase);
+
+    private string Breadcrumb => NavigationManager.ToBaseRelativePath(NavigationManager.Uri).Split('?', '#')[0] switch
+    {
+        "" => "dashboard",
+        var value => value
+    };
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await ThemeService.InitializeAsync();
+            StateHasChanged();
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (!IsLoginPage && !AuthService.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/login");
+        }
+    }
+
+    private async Task LogoutAsync()
+    {
+        await AuthService.LogoutAsync();
+        NavigationManager.NavigateTo("/login");
+    }
+}

@@ -1,0 +1,132 @@
+@using BlazorBlueprint.Icons.Lucide.Components
+@inherits LayoutComponentBase
+
+<ToastProvider Position="ToastPosition.BottomRight" />
+<PortalHost />
+
+<div class="relative min-h-screen flex flex-col">    
+	<SidebarProvider>
+		<Sidebar>
+			<SidebarHeader>
+				<div class="flex items-center gap-2 px-2 h-10">
+					<div class="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
+						<LucideIcon Name="command" class="h-4 w-4" />
+					</div>
+					<span class="text-sm font-semibold">Acme</span>
+				</div>
+			</SidebarHeader>
+			<SidebarContent>
+				<SidebarGroup>
+					<SidebarGroupLabel>Group</SidebarGroupLabel>
+					<SidebarMenu>
+						<SidebarMenuItem>
+							<Collapsible DefaultOpen="true">
+								<SidebarMenuButton>
+									<LucideIcon Name="terminal" class="h-4 w-4" />
+									<span>Menu</span>
+									<LucideIcon Name="chevron-right" class="ml-auto h-4 w-4" />
+								</SidebarMenuButton>
+								<CollapsibleContent>
+									<SidebarMenuSub>
+										<SidebarMenuSubItem>
+											<SidebarMenuSubButton Href="/dashboard" IsActive="true">
+												<span>Dashboard</span>
+											</SidebarMenuSubButton>
+										</SidebarMenuSubItem>
+										<SidebarMenuSubItem>
+											<SidebarMenuSubButton Href="/items">
+												<span>Items</span>
+											</SidebarMenuSubButton>
+										</SidebarMenuSubItem>
+										<SidebarMenuSubItem>
+											<SidebarMenuSubButton Href="/items/create">
+												<span>Form</span>
+											</SidebarMenuSubButton>
+										</SidebarMenuSubItem>
+										<SidebarMenuSubItem>
+											<SidebarMenuSubButton Href="/profile">
+												<span>Profile</span>
+											</SidebarMenuSubButton>
+										</SidebarMenuSubItem>
+										<SidebarMenuSubItem>
+											<SidebarMenuSubButton Href="/settings">
+												<span>Settings</span>
+											</SidebarMenuSubButton>
+										</SidebarMenuSubItem>
+									</SidebarMenuSub>
+								</CollapsibleContent>
+							</Collapsible>
+						</SidebarMenuItem>
+					</SidebarMenu>
+				</SidebarGroup>
+			</SidebarContent>
+			<SidebarFooter>
+				<DropdownMenu>
+					<DropdownMenuTrigger>
+						<Button Variant="ButtonVariant.Ghost" Class="w-full justify-start gap-2 px-2 h-10">
+							<Avatar Size="AvatarSize.Small">
+								<AvatarFallback>AJ</AvatarFallback>
+							</Avatar>
+							<div class="flex flex-col items-start text-left flex-1 min-w-0">
+								<span class="text-sm font-medium truncate">Alex Johnson</span>
+								<span class="text-xs text-muted-foreground truncate">alex@example.com</span>
+							</div>
+							<LucideIcon Name="chevrons-up-down" class="h-4 w-4 text-muted-foreground" />
+						</Button>
+					</DropdownMenuTrigger>
+					<DropdownMenuContent Side="PopoverSide.Top" Align="PopoverAlign.Start" MatchTriggerWidth="true">
+						<DropdownMenuLabel>My Account</DropdownMenuLabel>
+						<DropdownMenuSeparator />
+						<DropdownMenuItem>Profile</DropdownMenuItem>
+						<DropdownMenuItem>Billing</DropdownMenuItem>
+						<DropdownMenuItem>Notifications</DropdownMenuItem>
+						<DropdownMenuSeparator />
+						<DropdownMenuItem>Log out</DropdownMenuItem>
+					</DropdownMenuContent>
+				</DropdownMenu>
+			</SidebarFooter>
+		</Sidebar>
+		<SidebarInset>
+			<header class="sidebar-inset-header sticky top-0 z-50 w-full border-b bg-background">
+				<div class="container flex h-14 items-center">
+					<SidebarTrigger />
+					@*
+            <nav class="flex items-center space-x-6 text-sm font-medium">
+            </nav> *@
+					<div class="flex flex-1 items-center justify-end space-x-2">
+						<Button Variant="ButtonVariant.Ghost" Size="ButtonSize.Icon" @onclick="ToggleDarkMode">
+							@if (isDarkMode)
+							{
+								<LucideIcon Name="sun" Size="20" />
+							}
+							else
+							{
+								<LucideIcon Name="moon" Size="20" />
+							}
+						</Button>
+					</div>
+				</div>
+				<Separator Orientation="SeparatorOrientation.Vertical" class="separator-vertical" />
+				@* <AuthorizeView Context="authContext">
+                <Authorized>
+                    <span class="user-email">@UserEmail</span>
+                    <span class="user-role-badge">@UserRole</span>
+                </Authorized>
+            </AuthorizeView> *@
+			</header>
+			<main class="sidebar-inset-content flex-1">
+				@Body
+			</main>
+		</SidebarInset>
+	</SidebarProvider>
+	<footer class="border-t py-6 md:py-0">
+		<div class="container flex flex-col items-center justify-between gap-4 md:h-14 md:flex-row">
+			<p class="text-sm text-muted-foreground">
+				Built with <a href="https://blazorblueprintui.com" target="_blank" class="font-medium underline underline-offset-4">BlazorBlueprint</a>
+			</p>
+		</div>
+	</footer>
+</div>
+
+<ToastProvider Position="ToastPosition.BottomRight" />
+<PortalHost />
