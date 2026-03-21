@@ -1,67 +1,139 @@
 @inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 @inject ThemeService ThemeService
-@inject AuthService AuthService
 
 <PageTitle>Babidi Dashboard</PageTitle>
 
-<div class="dashboard-shell">
-    <aside class="sidebar">
-        <div class="brand">Babidi</div>
-        <nav>
-            <NavLink href="/dashboard">Dashboard</NavLink>
-            <NavLink href="/items">Items</NavLink>
-            <NavLink href="/items/create">Create Item</NavLink>
-            <NavLink href="/profile">Profile</NavLink>
-            <NavLink href="/settings">Settings</NavLink>
-        </nav>
-    </aside>
+<BbSidebarProvider DefaultOpen="true" Variant="SidebarVariant.Sidebar">
+    <BbSidebar>
+        <BbSidebarHeader>
+            <BbSidebarHeaderContent>
+                <div class="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold">
+                    B
+                </div>
+                <BbSidebarHeaderInfo>
+                    <span class="truncate font-semibold">Babidi</span>
+                    <span class="truncate text-xs text-muted-foreground">Dashboard</span>
+                </BbSidebarHeaderInfo>
+            </BbSidebarHeaderContent>
+        </BbSidebarHeader>
 
-    <main class="main-content">
-        <header class="topbar">
-            <div>
-                <small class="muted">Babidi / @Breadcrumb</small>
-            </div>
-            <div class="topbar-actions">
-                <button class="action-btn" @onclick="ThemeService.ToggleAsync">
-                    @(ThemeService.IsDarkMode ? "Light" : "Dark") mode
-                </button>
-                <button class="action-btn" @onclick="LogoutAsync">Logout</button>
-            </div>
+        <BbSidebarContent>
+            <BbSidebarGroup>
+                <BbSidebarGroupLabel>Navigation</BbSidebarGroupLabel>
+                <BbSidebarGroupContent>
+                    <BbSidebarMenu>
+                        <BbSidebarMenuItem>
+                            <BbSidebarMenuButton Href="/dashboard" Tooltip="Dashboard">
+                                <LucideIcon Name="LayoutDashboard" />
+                                <span>Dashboard</span>
+                            </BbSidebarMenuButton>
+                        </BbSidebarMenuItem>
+                        <BbSidebarMenuItem>
+                            <BbSidebarMenuButton Href="/items" Tooltip="Items">
+                                <LucideIcon Name="Package" />
+                                <span>Items</span>
+                            </BbSidebarMenuButton>
+                        </BbSidebarMenuItem>
+                        <BbSidebarMenuItem>
+                            <BbSidebarMenuButton Href="/items/create" Tooltip="Create Item">
+                                <LucideIcon Name="Plus" />
+                                <span>Create Item</span>
+                            </BbSidebarMenuButton>
+                        </BbSidebarMenuItem>
+                        <BbSidebarMenuItem>
+                            <BbSidebarMenuButton Href="/profile" Tooltip="Profile">
+                                <LucideIcon Name="User" />
+                                <span>Profile</span>
+                            </BbSidebarMenuButton>
+                        </BbSidebarMenuItem>
+                        <BbSidebarMenuItem>
+                            <BbSidebarMenuButton Href="/settings" Tooltip="Settings">
+                                <LucideIcon Name="Settings" />
+                                <span>Settings</span>
+                            </BbSidebarMenuButton>
+                        </BbSidebarMenuItem>
+                    </BbSidebarMenu>
+                </BbSidebarGroupContent>
+            </BbSidebarGroup>
+        </BbSidebarContent>
+
+        <BbSidebarFooter>
+            <BbSidebarMenu>
+                <BbSidebarMenuItem>
+                    <BbSidebarMenuButton @onclick="ThemeService.ToggleAsync" Tooltip="Toggle Theme">
+                        <LucideIcon Name="@(ThemeService.IsDarkMode ? "Sun" : "Moon")" />
+                        <span>@(ThemeService.IsDarkMode ? "Light Mode" : "Dark Mode")</span>
+                    </BbSidebarMenuButton>
+                </BbSidebarMenuItem>
+                <BbSidebarMenuItem>
+                    <BbSidebarMenuButton @onclick="LogoutAsync" Tooltip="Logout">
+                        <LucideIcon Name="LogOut" />
+                        <span>Logout</span>
+                    </BbSidebarMenuButton>
+                </BbSidebarMenuItem>
+            </BbSidebarMenu>
+        </BbSidebarFooter>
+
+        <BbSidebarRail />
+    </BbSidebar>
+
+    <BbSidebarInset>
+        <header class="flex h-16 items-center gap-2 border-b px-4 bg-card">
+            <BbSidebarTrigger />
+            <h1 class="text-lg font-semibold">@CurrentPageLabel</h1>
         </header>
-        <section class="content">@Body</section>
-    </main>
-</div>
+        <main class="flex-1 overflow-auto">
+            @Body
+        </main>
+    </BbSidebarInset>
+</BbSidebarProvider>
+
+@* Required for overlay components (BbDialog, BbSheet, BbPopover, BbTooltip, etc.) *@
+<BbPortalHost />
+
+@* Required for toast notifications via ToastService *@
+<BbToastProvider />
+
+@* Required for programmatic confirm dialogs via DialogService *@
+<BbDialogProvider />
 
 @code {
-    private bool IsLoginPage => NavigationManager.ToBaseRelativePath(NavigationManager.Uri).StartsWith("login", StringComparison.OrdinalIgnoreCase);
+    private string CurrentPageLabel { get; set; } = "Dashboard";
 
-    private string Breadcrumb => NavigationManager.ToBaseRelativePath(NavigationManager.Uri).Split('?', '#')[0] switch
+    protected override void OnInitialized()
     {
-        "" => "dashboard",
-        var value => value
-    };
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await ThemeService.InitializeAsync();
-            StateHasChanged();
-        }
+        NavigationManager.LocationChanged += OnLocationChanged;
+        UpdatePageLabel();
     }
 
-    protected override void OnParametersSet()
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        if (!IsLoginPage && !AuthService.IsAuthenticated)
+        UpdatePageLabel();
+        StateHasChanged();
+    }
+
+    private void UpdatePageLabel()
+    {
+        CurrentPageLabel = NavigationManager.ToBaseRelativePath(NavigationManager.Uri).Split('?', '#')[0] switch
         {
-            NavigationManager.NavigateTo("/login");
-        }
+            "" => "Dashboard",
+            "dashboard" => "Dashboard",
+            "items" => "Items",
+            "items/create" => "Create Item",
+            "profile" => "Profile",
+            "settings" => "Settings",
+            var value => value
+        };
     }
 
     private async Task LogoutAsync()
     {
-        await AuthService.LogoutAsync();
         NavigationManager.NavigateTo("/login");
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= OnLocationChanged;
     }
 }

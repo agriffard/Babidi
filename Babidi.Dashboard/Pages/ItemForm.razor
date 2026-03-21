@@ -11,38 +11,38 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
 
-    <Card>
-        <CardContent class="form-grid">
+    <BbCard>
+        <BbCardContent class="form-grid">
             <div>
-                <Label For="name">Name</Label>
-                <Input Id="name" @bind-Value="model.Name" />
+                <BbLabel For="name">Name</BbLabel>
+                <BbInput Id="name" @bind-Value="model.Name" />
             </div>
             <div>
-                <Label For="category">Category</Label>
-                <Input Id="category" @bind-Value="model.Category" />
+                <BbLabel For="category">Category</BbLabel>
+                <BbInput Id="category" @bind-Value="model.Category" />
             </div>
             <div>
-                <Label For="status">Status</Label>
-                <Input Id="status" @bind-Value="model.Status" />
+                <BbLabel For="status">Status</BbLabel>
+                <BbInput Id="status" @bind-Value="model.Status" />
             </div>
             <div>
-                <Label For="value">Value</Label>
-                <Input Id="value" Type="InputType.Number" @bind-Value="valueInput" />
+                <BbLabel For="value">Value</BbLabel>
+                <BbInput Id="value" Type="InputType.Number" @bind-Value="valueInput" />
             </div>
             <div class="switch-row">
-                <Switch @bind-Checked="model.IsFeatured" />
-                <Label>Featured item</Label>
+                <BbSwitch @bind-Checked="model.IsFeatured" />
+                <BbLabel>Featured item</BbLabel>
             </div>
             <div>
-                <Label For="notes">Notes</Label>
-                <Textarea Id="notes" @bind-Value="model.Notes" />
+                <BbLabel For="notes">Notes</BbLabel>
+                <BbTextarea Id="notes" @bind-Value="model.Notes" />
             </div>
-        </CardContent>
-        <CardFooter class="topbar-actions">
+        </BbCardContent>
+        <BbCardFooter class="topbar-actions">
             <button type="button" class="action-btn" @onclick="Cancel">Cancel</button>
             <button type="submit" class="action-btn">Save</button>
-        </CardFooter>
-    </Card>
+        </BbCardFooter>
+    </BbCard>
 </EditForm>
 
 @code {

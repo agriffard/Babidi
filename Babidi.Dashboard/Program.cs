@@ -1,7 +1,6 @@
 using Babidi.Dashboard;
 using Babidi.Dashboard.Services;
-using BlazorBlueprint.Components.Toast;
-using BlazorBlueprint.Primitives.Extensions;
+using BlazorBlueprint.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -11,8 +10,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-builder.Services.AddBlazorBlueprintPrimitives();
-builder.Services.AddScoped<ToastService>();
+builder.Services.AddBlazorBlueprintComponents();
 
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ThemeService>();

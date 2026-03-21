@@ -5,35 +5,35 @@
 <PageTitle>Login</PageTitle>
 
 <div class="login-shell">
-    <Card Class="login-card">
-        <CardHeader>
-            <CardTitle>Babidi Dashboard</CardTitle>
-            <CardDescription>Sign in to continue</CardDescription>
-        </CardHeader>
-        <CardContent class="space-y-4">
+    <BbCard Class="login-card">
+        <BbCardHeader>
+            <BbCardTitle>Babidi Dashboard</BbCardTitle>
+            <BbCardDescription>Sign in to continue</BbCardDescription>
+        </BbCardHeader>
+        <BbCardContent class="space-y-4">
             <EditForm Model="this" OnSubmit="LoginAsync">
                 <div>
-                    <Label For="email">Email</Label>
+                    <BbLabel For="email">Email</BbLabel>
                     <InputText id="email" class="native-input" @bind-Value="email" />
                 </div>
                 <div>
-                    <Label For="password">Password</Label>
+                    <BbLabel For="password">Password</BbLabel>
                     <InputText id="password" type="password" class="native-input" @bind-Value="password" />
                 </div>
                 <div class="remember-row">
                     <InputCheckbox id="remember" @bind-Value="rememberMe" />
-                    <Label For="remember">Remember me</Label>
+                    <BbLabel For="remember">Remember me</BbLabel>
                 </div>
                 @if (!string.IsNullOrEmpty(error))
                 {
                     <p class="error-text">@error</p>
                 }
-                <CardFooter>
+                <BbCardFooter>
                     <button type="submit" class="action-btn">Login</button>
-                </CardFooter>
+                </BbCardFooter>
             </EditForm>
-        </CardContent>
-    </Card>
+        </BbCardContent>
+    </BbCard>
 </div>
 
 @code {

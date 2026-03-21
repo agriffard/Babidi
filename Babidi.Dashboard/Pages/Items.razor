@@ -7,13 +7,13 @@
 <h1>Items</h1>
 
 <div class="toolbar">
-    <Input Placeholder="Search by name or category" @bind-Value="query" />
+    <BbInput Placeholder="Search by name or category" @bind-Value="query" />
     <button class="action-btn" @onclick="ApplySearch">Search</button>
     <button class="action-btn" @onclick="@(() => NavigationManager.NavigateTo("/items/create"))">Create</button>
 </div>
 
-<Card>
-    <CardContent>
+<BbCard>
+    <BbCardContent>
         <table class="simple-table">
             <thead>
                 <tr>
@@ -37,8 +37,8 @@
                 }
             </tbody>
         </table>
-    </CardContent>
-</Card>
+    </BbCardContent>
+</BbCard>
 
 <div class="row-actions">
     @foreach (var item in items)
